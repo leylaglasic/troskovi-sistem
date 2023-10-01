@@ -8,9 +8,4 @@
     <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2023 by Lejla G</span>
   </div>
 </footer>
-</div>
-<script src="/biblioteke/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom styles for this template -->
 <link href="css/footer.css" rel="stylesheet">
-</body>
-</html>

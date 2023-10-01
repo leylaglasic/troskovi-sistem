@@ -182,7 +182,7 @@ class Korisnik
 				$Korisnik = $result->fetch_assoc();
 				$_SESSION["userid"] = $Korisnik['id'];
 				$_SESSION["rola"] = $Korisnik['rola'];
-				$_SESSION["name"] = $Korisnik['email'];
+				$_SESSION["ime"] = $Korisnik['ime'];
 				return 1;
 			} else {
 				return 0;
