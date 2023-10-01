@@ -26,9 +26,11 @@ if (!$Korisnik->loggedIn()) {
 
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link href="biblioteke/assets/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/sign-in.css" rel="stylesheet">
+  <link href="css/dodatno.css" rel="stylesheet">
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;

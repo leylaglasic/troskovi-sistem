@@ -14,22 +14,22 @@ class Trosak
 	public function listaTroskova()
 	{
 		if ($_SESSION["userid"]) {
-			$sqlQuery = "SELECT troskovi.id, troskovi.iznos, troskovi.datum, vrsta_troska.ime
+			$sqlQuery = "SELECT Trosak.id, Trosak.iznos, Trosak.datum, kategorija_troska.ime
 				FROM " . $this->Troskovi . " AS Trosak 
-				LEFT JOIN " . $this->vrsta_troska . " AS vrsta_troska ON troskovi.vrsta_troska_id = vrsta_troska.id
-				WHERE troskovi.korisnik_id = '" . $_SESSION["userid"] . "' ";
+				LEFT JOIN " . $this->vrsta_troska . " AS kategorija_troska ON Trosak.vrsta_troska_id = kategorija_troska.id
+				WHERE Trosak.korisnik_id = '" . $_SESSION["userid"] . "' ";
 
 			if (!empty($_POST["search"]["value"])) {
 				$sqlQuery .= ' AND (Trosak.id LIKE "%' . $_POST["search"]["value"] . '%" ';
 				$sqlQuery .= ' OR Trosak.iznos LIKE "%' . $_POST["search"]["value"] . '%" ';
 				$sqlQuery .= ' OR Trosak.datum LIKE "%' . $_POST["search"]["value"] . '%" ';
-				$sqlQuery .= ' OR vrsta_troska.ime LIKE "%' . $_POST["search"]["value"] . '%") ';
+				$sqlQuery .= ' OR kategorija_troska.ime LIKE "%' . $_POST["search"]["value"] . '%") ';
 			}
 
 			if (!empty($_POST["order"])) {
 				$sqlQuery .= 'ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';
 			} else {
-				$sqlQuery .= 'ORDER BY troskovi.datum DESC ';
+				$sqlQuery .= 'ORDER BY Trosak.datum DESC ';
 			}
 
 			if ($_POST["length"] != -1) {
@@ -52,10 +52,16 @@ class Trosak
 				$rows = array();
 				$rows[] = $count;
 				$rows[] = ucfirst($Trosak['iznos']);
-				$rows[] = $Trosak['vrsta_troska_ime'];
+				$rows[] = $Trosak['ime'];
 				$rows[] = $Trosak['datum'];
-				$rows[] = '<button type="button" ime="update" id="' . $Trosak["id"] . '" class="btn btn-warning btn-xs update"><span class="glyphicon glyphicon-edit" title="Uredi"></span></button>';
-				$rows[] = '<button type="button" ime="delete" id="' . $Trosak["id"] . '" class="btn btn-danger btn-xs delete" ><span class="glyphicon glyphicon-remove" title="Brisi"></span></button>';
+				$rows[] = '<button type="button" name="uredi" id="' . $Trosak["id"] . '" class="btn btn-outline-warning btn-sm uredi" data-bs-toggle="modal"
+				data-bs-target="#trosakModal">
+                <span><i class="bi bi-pencil"></i> Uredi</span>
+              </button>';
+			  $rows[] = '<button type="button" name="brisi" id="' . $Trosak["id"] . '" class="btn btn-outline-danger btn-sm brisi">
+			  <span><i class="bi bi-trash3"></i> Brisi</span>
+			</button>';
+			
 				$records[] = $rows;
 				$count++;
 			}
@@ -74,7 +80,7 @@ class Trosak
 	public function insert()
 	{
 
-		if ($this->vrsta_troska && $this->iznos && $_SESSION["userid"]) {
+		if ($this->vrsta_troska_id && $this->datum && $this->iznos && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 				INSERT INTO " . $this->Troskovi . "(`iznos`, `datum`, `vrsta_troska_id`, `korisnik_id`)
@@ -82,9 +88,9 @@ class Trosak
 
 			$this->iznos = htmlspecialchars(strip_tags($this->iznos));
 			$this->datum = htmlspecialchars(strip_tags($this->datum));
-			$this->vrsta_troska = htmlspecialchars(strip_tags($this->vrsta_troska));
+			$this->vrsta_troska_id = htmlspecialchars(strip_tags($this->vrsta_troska_id));
 
-			$stmt->bind_param("isii", $this->iznos, $this->datum, $this->vrsta_troska, $_SESSION["userid"]);
+			$stmt->bind_param("isii", $this->iznos, $this->datum, $this->vrsta_troska_id, $_SESSION["userid"]);
 
 			if ($stmt->execute()) {
 				return true;
@@ -95,7 +101,7 @@ class Trosak
 	public function update()
 	{
 
-		if ($this->id && $this->vrsta_troska && $this->iznos && $_SESSION["userid"]) {
+		if ($this->id && $this->vrsta_troska_id && $this->iznos && $this->datum && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 			UPDATE " . $this->Troskovi . " 
@@ -104,9 +110,9 @@ class Trosak
 
 			$this->iznos = htmlspecialchars(strip_tags($this->iznos));
 			$this->datum = htmlspecialchars(strip_tags($this->datum));
-			$this->vrsta_troska = htmlspecialchars(strip_tags($this->vrsta_troska));
+			$this->vrsta_troska_id = htmlspecialchars(strip_tags($this->vrsta_troska_id));
 
-			$stmt->bind_param("isii", $this->iznos, $this->datum, $this->vrsta_troska, $this->id);
+			$stmt->bind_param("isii", $this->iznos, $this->datum, $this->vrsta_troska_id, $this->id);
 
 			if ($stmt->execute()) {
 				return true;
@@ -146,10 +152,10 @@ class Trosak
 		if ($this->trosak_id && $_SESSION["userid"]) {
 
 			$sqlQuery = "
-			SELECT troskovi.id, troskovi.iznos, troskovi.datum, troskovi.vrsta_troska_id
+			SELECT Trosak.id, Trosak.iznos, Trosak.datum, Trosak.vrsta_troska_id
 			FROM " . $this->Troskovi . " AS Trosak
-			LEFT JOIN " . $this->vrsta_troska . " AS vrsta_troska ON troskovi.vrsta_troska_id = vrsta_troska.id
-			WHERE troskovi.id = ? ";
+			LEFT JOIN " . $this->vrsta_troska . " AS kategorija_troska ON Trosak.vrsta_troska_id = kategorija_troska.id
+			WHERE Trosak.id = ? ";
 
 			$stmt = $this->conn->prepare($sqlQuery);
 			$stmt->bind_param("i", $this->trosak_id);
