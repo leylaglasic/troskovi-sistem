@@ -58,10 +58,10 @@ class Trosak
 				data-bs-target="#trosakModal">
                 <span><i class="bi bi-pencil"></i> Uredi</span>
               </button>';
-			  $rows[] = '<button type="button" name="brisi" id="' . $Trosak["id"] . '" class="btn btn-outline-danger btn-sm brisi">
+				$rows[] = '<button type="button" name="brisi" id="' . $Trosak["id"] . '" class="btn btn-outline-danger btn-sm brisi">
 			  <span><i class="bi bi-trash3"></i> Brisi</span>
 			</button>';
-			
+
 				$records[] = $rows;
 				$count++;
 			}
@@ -216,8 +216,13 @@ class Trosak
 			$rows[] = $count;
 			$rows[] = ucfirst($vrsta_troska['ime']);
 			$rows[] = $vrsta_troska['status'];
-			$rows[] = '<button type="button" ime="update" id="' . $vrsta_troska["id"] . '" class="btn btn-warning btn-xs update"><span class="glyphicon glyphicon-edit" title="Uredi"></span></button>';
-			$rows[] = '<button type="button" ime="delete" id="' . $vrsta_troska["id"] . '" class="btn btn-danger btn-xs delete" ><span class="glyphicon glyphicon-remove" title="Brisi"></span></button>';
+			$rows[] = '<button type="button" name="uredi" id="' . $vrsta_troska["id"] . '" class="btn btn-outline-warning btn-sm uredi" data-bs-toggle="modal"
+				data-bs-target="#vrstaTroskaModal">
+                <span><i class="bi bi-pencil"></i> Uredi</span>
+              </button>';
+			$rows[] = '<button type="button" name="brisi" id="' . $vrsta_troska["id"] . '" class="btn btn-outline-danger btn-sm brisi">
+			  <span><i class="bi bi-trash3"></i> Brisi</span>
+			</button>';
 			$records[] = $rows;
 			$count++;
 		}
@@ -235,16 +240,16 @@ class Trosak
 	public function insert_vrsta_troska()
 	{
 
-		if ($this->vrsta_troska_ime && $_SESSION["userid"]) {
+		if ($this->ime && $this->status && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 				INSERT INTO " . $this->vrsta_troska . "(`ime`, `status`)
 				VALUES(?, ?)");
 
-			$this->vrsta_troska_ime = htmlspecialchars(strip_tags($this->vrsta_troska_ime));
+			$this->ime = htmlspecialchars(strip_tags($this->ime));
 			$this->status = htmlspecialchars(strip_tags($this->status));
 
-			$stmt->bind_param("ss", $this->vrsta_troska_ime, $this->status);
+			$stmt->bind_param("ss", $this->ime, $this->status);
 
 			if ($stmt->execute()) {
 				return true;
@@ -255,17 +260,17 @@ class Trosak
 	public function update_vrsta_troska()
 	{
 
-		if ($this->id && $this->vrsta_troska_ime && $_SESSION["userid"]) {
+		if ($this->id && $this->ime && $this->status && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 			UPDATE " . $this->vrsta_troska . " 
 			SET ime = ?, status = ?
 			WHERE id = ?");
 
-			$this->vrsta_troska_ime = htmlspecialchars(strip_tags($this->vrsta_troska_ime));
+			$this->ime = htmlspecialchars(strip_tags($this->ime));
 			$this->status = htmlspecialchars(strip_tags($this->status));
 
-			$stmt->bind_param("ssi", $this->vrsta_troska_ime, $this->status, $this->id);
+			$stmt->bind_param("ssi", $this->ime, $this->status, $this->id);
 
 			if ($stmt->execute()) {
 				return true;

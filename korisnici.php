@@ -20,11 +20,11 @@ include('inc/sistem-pocetna-top.php');
 						<li id="income" class="nav-item">
 							<a class="nav-link" href="prilivi.php">Prilivi</a>
 						</li>
-						<li id="expense_category" class="nav-item">
-							<a class="nav-link" href="vrsta_troska.php">Vrsta Troska</a>
+						<li id="vrste_troskova" class="nav-item">
+							<a class="nav-link" href="vrste_troskova.php">Vrste Troskova</a>
 						</li>
-						<li id="income_category" class="nav-item">
-							<a class="nav-link" href="vrsta_priliva.php">Vrsta Priliva</a>
+						<li id="vrste_priliva" class="nav-item">
+							<a class="nav-link" href="vrste_priliva.php">Vrste Priliva</a>
 						</li>
 						<li id="korisnici" class="nav-item">
 							<a class="nav-link active" aria-current="page" href="korisnici.php">Korisnici</a>
@@ -109,7 +109,7 @@ include('inc/sistem-pocetna-top.php');
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="country" class="control-label">Rola</label>
+								<label for="Rola" class="control-label">Rola</label>
 								<select class="form-control" id="rola" name="rola">
 									<option value="">Odaberi Rolu</option>
 									<option value="administrator">Administrator</option>
