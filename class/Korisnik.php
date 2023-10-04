@@ -52,8 +52,13 @@ class Korisnik
 			$rows[] = ucfirst($Korisnik['ime']) . " " . ucfirst($Korisnik['prezime']);
 			$rows[] = $Korisnik['email'];
 			$rows[] = $Korisnik['rola'];
-			$rows[] = '<button type="button" name="update" id="' . $Korisnik["id"] . '" class="btn btn-warning btn-xs update"><span class="glyphicon glyphicon-edit" title="Edit"></span></button>';
-			$rows[] = '<button type="button" name="delete" id="' . $Korisnik["id"] . '" class="btn btn-danger btn-xs delete" ><span class="glyphicon glyphicon-remove" title="Delete"></span></button>';
+			$rows[] = '<button type="button" name="uredi" id="' . $Korisnik["id"] . '" class="btn btn-outline-warning btn-sm uredi" data-bs-toggle="modal"
+				data-bs-target="#korisnikModal">
+                <span><i class="bi bi-pencil"></i> Uredi</span>
+              </button>';
+			  $rows[] = '<button type="button" name="brisi" id="' . $Korisnik["id"] . '" class="btn btn-outline-danger btn-sm brisi">
+			  <span><i class="bi bi-trash3"></i> Brisi</span>
+			</button>';
 			$records[] = $rows;
 			$count++;
 		}
@@ -71,7 +76,7 @@ class Korisnik
 	public function insert()
 	{
 
-		if ($this->rola && $this->email && $this->password && $_SESSION["userid"]) {
+		if ($this->ime && $this->prezime && $this->rola && $this->email && $this->password && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 				INSERT INTO " . $this->korisnici . "(`ime`, `prezime`, `email`, `password`, `rola`)
@@ -139,7 +144,7 @@ class Korisnik
 
 	public function detaljiKorisnika()
 	{
-		if ($this->Korisnik_id && $_SESSION["userid"]) {
+		if ($this->id && $_SESSION["userid"]) {
 
 			$sqlQuery = "
 				SELECT id, ime, prezime, email, password, rola
@@ -147,7 +152,7 @@ class Korisnik
 				WHERE id = ? ";
 
 			$stmt = $this->conn->prepare($sqlQuery);
-			$stmt->bind_param("i", $this->Korisnik_id);
+			$stmt->bind_param("i", $this->id);
 			$stmt->execute();
 			$result = $stmt->get_result();
 			$records = array();
