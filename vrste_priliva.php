@@ -22,10 +22,10 @@ include('inc/sistem-pocetna-top.php');
 							<a class="nav-link" href="prilivi.php">Prilivi</a>
 						</li>
 						<li id="vrste_troskova" class="nav-item">
-							<a class="nav-link active" aria-current="page" href=" vrste_troskova.php">Vrste Troskova</a>
+							<a class="nav-link" href="vrste_troskova.php">Vrste Troskova</a>
 						</li>
 						<li id="vrste_priliva" class="nav-item">
-							<a class="nav-link" href="vrste_priliva.php">Vrste Priliva</a>
+							<a class="nav-link active" aria-current="page" href="vrste_priliva.php">Vrste Priliva</a>
 						</li>
 						<li id="korisnici" class="nav-item">
 							<a class="nav-link" href="korisnici.php">Korisnici</a>
@@ -62,7 +62,7 @@ include('inc/sistem-pocetna-top.php');
 	<script src="js/dataTables.bootstrap.min.js"></script>
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-	<script src="js/vrste_troskova.js"></script>
+	<script src="js/vrste_priliva.js"></script>
 	<div>
 		<div class="panel-heading">
 			<div class="row">
@@ -70,8 +70,8 @@ include('inc/sistem-pocetna-top.php');
 					<h3 class="panel-title"></h3>
 				</div>
 				<div class="col-md-2">
-					<button type="button" id="dodajVrstuTroska" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-						data-bs-target="#vrstaTroskaModal">
+					<button type="button" id="dodajVrstuPriliva" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+						data-bs-target="#vrstaPrilivaModal">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
 							class="bi bi-plus-circle" viewBox="0 0 16 16">
 							<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
@@ -79,12 +79,12 @@ include('inc/sistem-pocetna-top.php');
 								d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z">
 							</path>
 						</svg>
-						Dodaj Vrstu Troska
+						Dodaj Vrstu Priliva
 					</button>
 				</div>
 			</div>
 		</div>
-		<table id="listaVrstaTroskova" class="table table-bordered table-striped w-100">
+		<table id="listaVrstaPriliva" class="table table-bordered table-striped w-100">
 			<thead>
 				<tr>
 					<th>#</th>
@@ -95,20 +95,19 @@ include('inc/sistem-pocetna-top.php');
 				</tr>
 			</thead>
 		</table>
-		<div class="modal fade" id="vrstaTroskaModal" tabindex="-1" role="dialog"
-			aria-labelledby="vrstaTroskaModalLabel" aria-hidden="true">
+		<div class="modal fade" id="vrstaPrilivaModal" tabindex="-1" role="dialog"
+			aria-labelledby="vrstaPrilivaModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
-				<form method="post" id="vrstaTroskaForma">
+				<form method="post" id="vrstaPrilivaForma">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title align-self-start"><i class="bi bi-plus-square-fill"></i> Uredi Vrstu
-								Troska</h5>
-							<div class="align-self-end"><button type="button" class="btn-close btn-sm "
-									data-bs-dismiss="modal" aria-label="Close"></button></div>
+								Priliva <div class="align-self-end"><button type="button" class="btn-close btn-sm "
+										data-bs-dismiss="modal" aria-label="Close"></button></div>
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="ime" class="control-label">Ime vrste troska</label>
+								<label for="ime" class="control-label">Ime vrste priliva</label>
 								<input type="text" name="ime" id="ime" autocomplete="off" class="form-control"
 									placeholder="Ime vrste troska" />
 
