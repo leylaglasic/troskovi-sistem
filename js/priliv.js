@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-	var expenseRecords = $('#listaTroskova').DataTable({
+	var listaPriliva = $('#listaPriliva').DataTable({
 		"lengthChange": false,
 		"processing": true,
 		"serverSide": true,
@@ -8,9 +8,9 @@ $(document).ready(function () {
 		'serverMethod': 'post',
 		"order": [],
 		"ajax": {
-			url: "troskovi_akcije.php",
+			url: "prilivi_akcije.php",
 			type: "POST",
-			data: { action: 'listaTroskova' },
+			data: { action: 'listaPriliva' },
 			dataType: "json"
 		},
 		"columnDefs": [
@@ -22,38 +22,38 @@ $(document).ready(function () {
 		"pageLength": 10
 	});
 
-	$('#dodajTrosak').click(function () {
-		$('#trosakModal').modal({
+	$('#dodajPriliv').click(function () {
+		$('#prilivModal').modal({
 			backdrop: 'static',
 			keyboard: false
 		}).toggle();
-		$('#trosakModal').on('shown.bs.modal', function () {
-			$('#trosakForma')[0].reset();
-			$('.modal-title').html('<i class=\"bi bi-plus-circle \"></i> Dodaj Trosak');
-			$('#action').val('dodajTrosak');
-			$('#snimi').val('Sacuvaj');
+		$("#prilivModal").on("shown.bs.modal", function () {
+			$('#prilivForma')[0].reset();
+			$('.modal-title').html("<i class='fa fa-plus'></i> Add Income");
+			$('#action').val('dodajPriliv');
+			$('#sacuvaj').val('Sacuvaj');
 		});
 	});
 
-	$("#listaTroskova").on('click', '.uredi', function () {
+	$("#listaPriliva").on('click', '.uredi', function () {
 		var id = $(this).attr("id");
-		var action = 'detaljiTroska';
+		var action = 'detaljiPriliva';
 		$.ajax({
-			url: 'troskovi_akcije.php',
+			url: 'prilivi_akcije.php',
 			method: "POST",
 			data: { id: id, action: action },
 			dataType: "json",
 			success: function (respData) {
-				$("#trosakModal").on("shown.bs.modal", function () {
-					$('#trosakForma')[0].reset();
+				$("#prilivModal").on("shown.bs.modal", function () {
+					$('#prilivForma')[0].reset();
 					respData.data.forEach(function (item) {
 						$('#id').val(item['id']);
-						$('#vrsta_troska_id').val(item['vrsta_troska_id']);
+						$('#vrsta_priliva_id').val(item['vrsta_priliva_id']);
 						$('#iznos').val(item['iznos']);
 						$('#datum').val(item['datum']);
 					});
-					$('.modal-title').html("<i class='fa fa-plus'></i> Uredi Trosak");
-					$('#action').val('urediTrosak');
+					$('.modal-title').html("<i class='fa fa-plus'></i> Edit Income");
+					$('#action').val('urediPriliv');
 					$('#sacuvaj').val('Sacuvaj');
 				}).modal({
 					backdrop: 'static',
@@ -63,33 +63,33 @@ $(document).ready(function () {
 		});
 	});
 
-	$("#trosakModal").on('submit', '#trosakForma', function (event) {
+	$("#prilivModal").on('submit', '#prilivForma', function (event) {
 		event.preventDefault();
 		$('#sacuvaj').attr('disabled', 'disabled');
 		var formData = $(this).serialize();
 		$.ajax({
-			url: "troskovi_akcije.php",
+			url: "prilivi_akcije.php",
 			method: "POST",
 			data: formData,
 			success: function (data) {
-				$('#trosakForma')[0].reset();
-				$('#trosakModal').modal('hide');
+				$('#prilivForma')[0].reset();
+				$('#prilivModal').modal('hide');
 				$('#sacuvaj').attr('disabled', false);
-				expenseRecords.ajax.reload();
+				listaPriliva.ajax.reload();
 			}
 		})
 	});
 
-	$("#listaTroskova").on('click', '.brisi', function () {
+	$("#listaPriliva").on('click', '.brisi', function () {
 		var id = $(this).attr("id");
-		var action = "brisiTrosak";
-		if (confirm("Da li stvarno zelite da obrisete ovaj trosak?")) {
+		var action = "brisiPriliv";
+		if (confirm("Da li stvarno zelite da obrisete ovaj priliv?")) {
 			$.ajax({
-				url: "troskovi_akcije.php",
+				url: "prilivi_akcije.php",
 				method: "POST",
 				data: { id: id, action: action },
 				success: function (data) {
-					expenseRecords.ajax.reload();
+					listaPriliva.ajax.reload();
 				}
 			})
 		} else {
