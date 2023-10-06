@@ -15,9 +15,9 @@ class Priliv
 	{
 
 		if ($_SESSION["userid"]) {
-			$sqlQuery = "SELECT prilivi.id, prilivi.iznos, prilivi.datum, vrsta_priliva.ime
+			$sqlQuery = "SELECT priliv.id, priliv.iznos, priliv.datum, vrsta_priliva.ime
 				FROM " . $this->PriliviTabela . " AS priliv 
-				LEFT JOIN " . $this->VrstaPrilivaTabela . " AS vrsta_priliva ON prilivi.vrsta_priliva_id = vrsta_priliva.id 
+				LEFT JOIN " . $this->VrstaPrilivaTabela . " AS vrsta_priliva ON priliv	.vrsta_priliva_id = vrsta_priliva.id 
 				WHERE priliv.korisnik_id = '" . $_SESSION["userid"] . "' ";
 
 			if (!empty($_POST["search"]["value"])) {
@@ -55,8 +55,13 @@ class Priliv
 				$rows[] = ucfirst($Priliv['iznos']);
 				$rows[] = $Priliv['ime'];
 				$rows[] = $Priliv['datum'];
-				$rows[] = '<button type="button" name="updatu" id="' . $Priliv["id"] . '" class="btn btn-warning btn-xs updatum"><span class="glyphicon glyphicon-edit" title="Uredi"></span></button>';
-				$rows[] = '<button type="button" name="delete" id="' . $Priliv["id"] . '" class="btn btn-danger btn-xs delete" ><span class="glyphicon glyphicon-remove" title="Brisi"></span></button>';
+				$rows[] = '<button type="button" name="uredi" id="' . $Priliv["id"] . '" class="btn btn-outline-warning btn-sm uredi" data-bs-toggle="modal"
+				data-bs-target="#prilivModal">
+                <span><i class="bi bi-pencil"></i> Uredi</span>
+              </button>';
+				$rows[] = '<button type="button" name="brisi" id="' . $Priliv["id"] . '" class="btn btn-outline-danger btn-sm brisi">
+			  <span><i class="bi bi-trash3"></i> Brisi</span>
+			</button>';
 				$records[] = $rows;
 				$count++;
 			}
@@ -75,17 +80,17 @@ class Priliv
 	public function insert()
 	{
 
-		if ($this->vrsta_priliva && $this->priliv_datum && $this->iznos && $_SESSION["userid"]) {
+		if ($this->vrsta_priliva_id && $this->datum && $this->iznos && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 				INSERT INTO " . $this->PriliviTabela . "(`iznos`, `datum`, `vrsta_priliva_id`, `korisnik_id`)
 				VALUES(?, ?, ?,?)");
 
 			$this->iznos = htmlspecialchars(strip_tags($this->iznos));
-			$this->Priliv_datum = htmlspecialchars(strip_tags($this->priliv_datum));
-			$this->Priliv_category = htmlspecialchars(strip_tags($this->vrsta_priliva));
+			$this->datum = htmlspecialchars(strip_tags($this->datum));
+			$this->vrsta_priliva_id = htmlspecialchars(strip_tags($this->vrsta_priliva_id));
 
-			$stmt->bind_param("isii", $this->iznos, $this->priliv_datum, $this->vrsta_priliva, $_SESSION["userid"]);
+			$stmt->bind_param("isii", $this->iznos, $this->datum, $this->vrsta_priliva_id, $_SESSION["userid"]);
 
 			if ($stmt->execute()) {
 				return true;
@@ -96,7 +101,7 @@ class Priliv
 	public function update()
 	{
 
-		if ($this->id && $this->vrsta_priliva && $this->iznos && $_SESSION["userid"]) {
+		if ($this->id && $this->vrsta_priliva_id && $this->datum && $this->iznos && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 			UPDATE " . $this->PriliviTabela . " 
@@ -104,10 +109,10 @@ class Priliv
 			WHERE id = ?");
 
 			$this->iznos = htmlspecialchars(strip_tags($this->iznos));
-			$this->priliv_datum = htmlspecialchars(strip_tags($this->priliv_datum));
-			$this->vrsta_priliva = htmlspecialchars(strip_tags($this->vrsta_priliva));
+			$this->datum = htmlspecialchars(strip_tags($this->datum));
+			$this->vrsta_priliva_id = htmlspecialchars(strip_tags($this->vrsta_priliva_id));
 
-			$stmt->bind_param("isii", $this->iznos, $this->priliv_datum, $this->vrsta_priliva, $this->id);
+			$stmt->bind_param("isii", $this->iznos, $this->datum, $this->vrsta_priliva_id, $this->id);
 
 			if ($stmt->execute()) {
 				return true;
@@ -135,16 +140,16 @@ class Priliv
 
 	public function detaljiPriliva()
 	{
-		if ($this->priliv_id && $_SESSION["userid"]) {
+		if ($this->id && $_SESSION["userid"]) {
 
 			$sqlQuery = "
-			SELECT prilivi.id, prilivi.iznos, prilivi.datum, prilivi.vrsta_priliva_id
+			SELECT Priliv.id, Priliv.iznos, Priliv.datum, Priliv.vrsta_priliva_id
 			FROM " . $this->PriliviTabela . " AS Priliv
-			LEFT JOIN " . $this->VrstaPrilivaTabela . " AS vrsta_priliva ON prilivi.vrsta_priliva_id = vrsta_priliva.id
+			LEFT JOIN " . $this->VrstaPrilivaTabela . " AS vrsta_priliva ON Priliv.vrsta_priliva_id = vrsta_priliva.id
 			WHERE Priliv.id = ? ";
 
 			$stmt = $this->conn->prepare($sqlQuery);
-			$stmt->bind_param("i", $this->priliv_id);
+			$stmt->bind_param("i", $this->id);
 			$stmt->execute();
 			$result = $stmt->get_result();
 			$records = array();
@@ -211,8 +216,13 @@ class Priliv
 			$rows[] = $count;
 			$rows[] = ucfirst($vrsta_priliva['ime']);
 			$rows[] = $vrsta_priliva['status'];
-			$rows[] = '<button type="button" name="update" id="' . $vrsta_priliva["id"] . '" class="btn btn-warning btn-xs updatum"><span class="glyphicon glyphicon-edit" title="Uredi"></span></button>';
-			$rows[] = '<button type="button" name="delete" id="' . $vrsta_priliva["id"] . '" class="btn btn-danger btn-xs delete" ><span class="glyphicon glyphicon-remove" title="Brisi"></span></button>';
+			$rows[] = '<button type="button" name="uredi" id="' . $vrsta_priliva["id"] . '" class="btn btn-outline-warning btn-sm uredi" data-bs-toggle="modal"
+				data-bs-target="#vrstaPrilivaModal">
+                <span><i class="bi bi-pencil"></i> Uredi</span>
+              </button>';
+			$rows[] = '<button type="button" name="brisi" id="' . $vrsta_priliva["id"] . '" class="btn btn-outline-danger btn-sm brisi">
+			  <span><i class="bi bi-trash3"></i> Brisi</span>
+			</button>';
 			$records[] = $rows;
 			$count++;
 		}
@@ -230,16 +240,16 @@ class Priliv
 	public function insertVrstaPriliva()
 	{
 
-		if ($this->vrsta_priliva_ime && $_SESSION["userid"]) {
+		if ($this->ime && $this->status && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 				INSERT INTO " . $this->VrstaPrilivaTabela . "(`ime`, `status`)
 				VALUES(?, ?)");
 
-			$this->vrsta_priliva_ime = htmlspecialchars(strip_tags($this->vrsta_priliva_ime));
+			$this->ime = htmlspecialchars(strip_tags($this->ime));
 			$this->status = htmlspecialchars(strip_tags($this->status));
 
-			$stmt->bind_param("ss", $this->vrsta_priliva_ime, $this->status);
+			$stmt->bind_param("ss", $this->ime, $this->status);
 
 			if ($stmt->execute()) {
 				return true;
@@ -250,17 +260,17 @@ class Priliv
 	public function updateVrstaPriliva()
 	{
 
-		if ($this->id && $this->vrsta_priliva_ime && $_SESSION["userid"]) {
+		if ($this->id && $this->ime && $this->status && $_SESSION["userid"]) {
 
 			$stmt = $this->conn->prepare("
 			UPDATE " . $this->VrstaPrilivaTabela . " 
 			SET ime = ?, status = ?
 			WHERE id = ?");
 
-			$this->vrsta_priliva_ime = htmlspecialchars(strip_tags($this->vrsta_priliva_ime));
+			$this->ime = htmlspecialchars(strip_tags($this->ime));
 			$this->status = htmlspecialchars(strip_tags($this->status));
 
-			$stmt->bind_param("ssi", $this->vrsta_priliva_ime, $this->status, $this->id);
+			$stmt->bind_param("ssi", $this->ime, $this->status, $this->id);
 
 			if ($stmt->execute()) {
 				return true;

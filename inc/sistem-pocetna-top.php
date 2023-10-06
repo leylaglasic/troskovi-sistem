@@ -2,12 +2,14 @@
 include_once 'config/Database.php';
 include_once 'class/Korisnik.php';
 include_once 'class/Trosak.php';
+include_once 'class/Priliv.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $Korisnik = new Korisnik($db);
 $Trosak = new Trosak($db);
+$Priliv = new Priliv($db);
 
 if (!$Korisnik->loggedIn()) {
   header("Location: index.php");
