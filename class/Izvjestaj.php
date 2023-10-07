@@ -1,5 +1,5 @@
 <?php
-class Report
+class Izvjestaj
 {
 
 	private $vrstaTroskaTabela = ' vrsta_troska';
@@ -13,11 +13,11 @@ class Report
 		$this->conn = $db;
 	}
 
-	public function prikaziReport()
+	public function prikaziIzvjestaj()
 	{
 		if ($this->odDatum && $this->doDatum && $_SESSION["userid"]) {
 
-			$sqlQuery = "SELECT prilivi.id, prilivi.iznos, prilivi.datum, vrsta_priliva.ime AS vrsta_priliva_ime
+			$sqlQuery = "SELECT prilivi.id, prilivi.iznos, prilivi.datum, vrsta_priliva.ime
 				FROM " . $this->priliviTabela . " AS prilivi 
 				LEFT JOIN " . $this->vrstaPrilivaTabela . " AS vrsta_priliva ON prilivi.vrsta_priliva_id = vrsta_priliva.id 
 				WHERE prilivi.korisnik_id = '" . $_SESSION["userid"] . "' AND prilivi.datum BETWEEN  '" . $this->odDatum . "' AND '" . $this->doDatum . "'";
