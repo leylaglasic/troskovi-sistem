@@ -26,7 +26,7 @@ include('inc/header.php');
 include('inc/container.php');
 ?>
 <form id="loginform" role="form" method="POST" action="">
-    <img class="mb-4" src="/biblioteke/icons/coin.svg" alt="" width="72" height="57">
+    <img class="mb-4" src="/troskovi-sistem/biblioteke/icons/coin.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Prijava na sistem</h1>
 
     <div class="form-floating">

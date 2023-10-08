@@ -24,7 +24,7 @@ if (!$Korisnik->loggedIn()) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/starter-template/">
-  <link type="image/png" sizes="32x32" rel="icon" href="/biblioteke/icons/favicon.png">
+  <link type="image/png" sizes="32x32" rel="icon" href="/troskovi-sistem/biblioteke/icons/favicon.png">
 
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
@@ -193,7 +193,7 @@ if (!$Korisnik->loggedIn()) {
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
           <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img class="mb-2" src="/biblioteke/icons/coin.svg" alt="" width="40" height="32">
+            <img class="mb-2" src="/troskovi-sistem/biblioteke/icons/coin.svg" alt="" width="40" height="32">
           </a>
         </div>
         <div class="col-md-4 text-end">
@@ -202,7 +202,7 @@ if (!$Korisnik->loggedIn()) {
               echo "Prijavljen kao: " . ucfirst($_SESSION["ime"]);
             } ?>
           </button>
-          <button type="button" class="btn btn-primary" onclick="location.href='/logout.php'"">Odjava</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/odjava.php'">Odjava</button>
       </div>
     </header>
   </div>
