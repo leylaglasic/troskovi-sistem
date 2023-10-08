@@ -202,7 +202,7 @@ if (!$Korisnik->loggedIn()) {
               echo "Prijavljen kao: " . ucfirst($_SESSION["ime"]);
             } ?>
           </button>
-          <button type="button" class="btn btn-primary" onclick="location.href='/odjava.php'">Odjava</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/troskovi-sistem/odjava.php'">Odjava</button>
       </div>
     </header>
   </div>
