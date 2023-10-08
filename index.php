@@ -39,6 +39,7 @@ include('inc/container.php');
     </div>
     <button class="btn btn-primary w-100 py-2" type="submit" name="login" value="Login">Prijava</button>
 	<hr>
+
 	<?php if ($loginMessage != '') { ?>
 					                			
 	<div class="alert alert-info" role="alert">
@@ -46,6 +47,26 @@ include('inc/container.php');
 </div>
 <?php } ?>
   </form>
+  <div class="row">
+    <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-subtitle">Admin</h5>
+        <p class="card-text mb-0">Email: admin@admin.com</p>
+        <p class="card-text">Password: 123</p>
+      </div>
+    </div>
+    </div>
+    <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-subtitle">Korisnik</h5>
+        <p class="card-text mb-0">Email: korisnik@korisnik.com</p>
+        <p class="card-text">Password: 123</p>
+      </div>
+    </div>
+    </div>
+  </div>
 </main>
 <?php include('inc/footer.php');?>
 <script src="/biblioteke/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>			      
